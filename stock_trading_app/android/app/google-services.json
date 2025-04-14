@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "942819761945",
+    "project_id": "holotrade-app",
+    "storage_bucket": "holotrade-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:942819761945:android:2bc484a52af7687ef52f88",
+        "android_client_info": {
+          "package_name": "com.example.stock_trading_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf_jmTH0AB1E-ij0vErKe0SbeQ2s9aLCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
