@@ -2,30 +2,37 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/stock_provider.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/user/user_dashboard.dart';
 import 'screens/admin/admin_dashboard.dart';
-import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  // Initialize some stocks for testing
-  await FirebaseFirestore.instance.collection('stocks').doc('TATA').set({
-    'id': 'TATA',
-    'name': 'Tata Motors',
-    'price': 100.0,
-    'initialPrice': 100.0,
-  });
-  await FirebaseFirestore.instance.collection('stocks').doc('RELIANCE').set({
-    'id': 'RELIANCE',
-    'name': 'Reliance Industries',
-    'price': 200.0,
-    'initialPrice': 200.0,
-  });
+    // Initialize some stocks for testing
+    await FirebaseFirestore.instance.collection('stocks').doc('TATA').set({
+      'id': 'TATA',
+      'name': 'Tata Motors',
+      'price': 100.0,
+      'initialPrice': 100.0,
+    });
+    await FirebaseFirestore.instance.collection('stocks').doc('RELIANCE').set({
+      'id': 'RELIANCE',
+      'name': 'Reliance Industries',
+      'price': 200.0,
+      'initialPrice': 200.0,
+    });
+  } catch (e) {
+    print('Firebase initialization error: $e');
+  }
 
   runApp(MyApp());
 }
@@ -45,11 +52,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.blue),
         home: Consumer<AuthProvider>(
           builder: (context, auth, _) {
+            // Show loading screen while checking authentication
+            if (auth.currentUser == null && !auth.isAdmin) {
+              return LoginScreen();
+            }
+            
             return auth.isAdmin
                 ? AdminDashboard()
-                : (auth.authService.auth.currentUser != null
-                    ? UserDashboard()
-                    : LoginScreen());
+                : UserDashboard();
           },
         ),
       ),

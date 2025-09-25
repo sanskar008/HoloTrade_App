@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/stock.dart';
+import '../models/transaction.dart' as app_transaction;
 
 class StockPriceService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -55,7 +56,7 @@ class StockPriceService {
     int buyVolume = 0;
     int sellVolume = 0;
     for (var doc in transactions.docs) {
-      Transaction tx = Transaction.fromMap(doc.data() as Map<String, dynamic>);
+      app_transaction.Transaction tx = app_transaction.Transaction.fromMap(doc.data() as Map<String, dynamic>);
       if (tx.type == 'buy') {
         buyVolume += tx.quantity;
       } else {
